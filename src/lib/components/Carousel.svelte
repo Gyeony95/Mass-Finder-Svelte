@@ -37,7 +37,7 @@
 				<div class="relative">
 					{#if loaded.includes(imageIndex)}
 						<img
-							src="{PUBLIC_POCKETBASE_URL}/api/files/{banner.collectionName}/{banner.id}/{banner.image}"
+							src="https://flyiopocketbase.fly.dev/api/files/carousels/ihqx6rls3ah5imn/heritage_lp_3_jYLD2QRgtq.webp"
 							class="w-full object-cover aspect-[2/3] md:aspect-[16/7]"
 							width="2000"
 							height="1000"
