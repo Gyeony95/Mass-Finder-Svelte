@@ -1,6 +1,9 @@
 <script lang="ts">
 	import GHCarousel from '$lib/components/GhCarousel.svelte';
 	import ProductItem from '$lib/components/ProductItem.svelte';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+	export let props: any;
 
 	var showcase = [
 		{
@@ -10,31 +13,19 @@
 					{
 						id: '1',
 						name: 'Smartphone',
-						image: 'images/img1.jpeg',
+						image: 'images/main_banner_1.webp',
 						slug: 'smartphone'
 					},
 					{
 						id: '2',
 						name: 'Laptop',
-						image: 'images/img1.jpeg',
+						image: 'images/main_banner_2.webp',
 						slug: 'laptop'
 					},
 					{
-						id: '2',
+						id: '3',
 						name: 'Laptop',
-						image: 'images/img1.jpeg',
-						slug: 'laptop'
-					},
-					{
-						id: '2',
-						name: 'Laptop',
-						image: 'images/img1.jpeg',
-						slug: 'laptop'
-					},
-					{
-						id: '2',
-						name: 'Laptop',
-						image: 'images/img1.jpeg',
+						image: 'images/main_banner_3.webp',
 						slug: 'laptop'
 					}
 				]

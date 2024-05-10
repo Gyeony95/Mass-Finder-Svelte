@@ -8,6 +8,12 @@ const config: UserConfig = {
 	},
 	optimizeDeps: {
 		include: ['svelte-carousel']
+	},
+	server: {
+		fs: {
+			// 프로젝트의 루트 경로에서 상대적인 경로를 사용합니다.
+			allow: ['static/json']
+		}
 	}
 };
 
