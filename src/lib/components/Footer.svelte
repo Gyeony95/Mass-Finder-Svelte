@@ -14,13 +14,13 @@
 			<div>
 				<h1 class="uppercase font-semibold mb-4 flex justify-center md:justify-start">Policy</h1>
 				<p class="mb-4">
-					<a href="/shop/iphone-cases" class="text-gray-600">이용약관</a>
+					<a href="/common/term" class="text-gray-600">이용약관</a>
 				</p>
 				<p class="mb-4">
-					<a href="/shop/airpods-cases" class="text-gray-600">개인정보 처리방침</a>
+					<a href="/" class="text-gray-600">개인정보 처리방침</a>
 				</p>
 				<p class="mb-4">
-					<a href="/shop/sleeves" class="text-gray-600">이메일주소 무단 수집 거부</a>
+					<a href="/" class="text-gray-600">이메일주소 무단 수집 거부</a>
 				</p>
 			</div>
 			<div>

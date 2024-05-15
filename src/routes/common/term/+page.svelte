@@ -2150,7 +2150,99 @@
 			</li>
 		</ul>
 		<div class="btn_top">
-			<a href="#" class="btn_top">top</a>
+			<a href="/common/term" class="btn_top">top</a>
 		</div>
 	</div>
 </div>
+
+<style>
+	body {
+		font-family: Arial, sans-serif;
+		line-height: 1.6;
+		background-color: #f9f9f9;
+		color: #333;
+		margin: 0;
+		padding: 0;
+	}
+
+	.module {
+		max-width: 800px;
+		margin: 20px auto;
+		padding: 20px;
+		background-color: #fff;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		border-radius: 5px;
+	}
+
+	#sub_title h1 {
+		font-size: 2em;
+		margin-bottom: 10px;
+		color: #333;
+		text-align: center;
+	}
+
+	.sub_title_desc {
+		font-size: 0.8em;
+		color: #666;
+	}
+
+	.terms_main {
+		padding: 20px;
+	}
+
+	.terms_main ul,
+	.terms_main ol {
+		padding-left: 20px;
+		margin: 20px 0;
+	}
+
+	.terms_main li {
+		margin-bottom: 10px;
+	}
+
+	.terms_main dl {
+		margin: 20px 0;
+	}
+
+	.terms_main dt {
+		font-weight: bold;
+		margin-top: 20px;
+	}
+
+	.terms_main dd {
+		margin-left: 20px;
+		margin-bottom: 10px;
+	}
+
+	.btn_top {
+		display: block;
+		text-align: right;
+		margin-bottom: 20px;
+	}
+
+	.btn_top a {
+		text-decoration: none;
+		color: #007bff;
+		font-weight: bold;
+	}
+
+	.btn_top a:hover {
+		text-decoration: underline;
+	}
+
+	/* Additional styles for improved readability */
+	p,
+	span {
+		font-size: 1em;
+		line-height: 1.6;
+	}
+
+	a {
+		color: #007bff;
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+</style>
