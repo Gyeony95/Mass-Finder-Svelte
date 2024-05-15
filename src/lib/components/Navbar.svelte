@@ -1,22 +1,25 @@
 <script lang="ts">
-	import Cart from '$lib/components/Cart.svelte';
 	import { onMount } from 'svelte';
-	import '$lib/model/MenuModel.ts';
+	import type { Menu, SubMenu } from '$lib/model/MenuModel';
 	import { browser } from '$app/environment';
+	import { menuStore } from '$lib/stores/menuStore';
 
 	let menus: Menu[] = [];
 
 	onMount(async () => {
 		if (browser) {
-			const response = await fetch('/static/json/menu.json');
+			const response = await fetch('/json/menu.json');
 			menus = await response.json();
+			menuStore.set(menus);
 		}
 	});
+
+	function onTapMenu(route: string) {
+		console.log(`Navigating to: ${route}`);
+	}
 </script>
 
 <nav class="sticky top-0 z-10 bg-[#282828] text-white">
-	<script>
-	</script>
 	<div class="max-w-7xl mx-auto">
 		<div class="flex justify-between items-center py-4">
 			<div>
@@ -25,17 +28,24 @@
 			<div class="flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 m-auto">
 				{#each menus as menu}
 					<div class="menu">
-						<a class="menu-item hover:underline underline-offset-4" href={menu.link}>{menu.title}</a
+						<a
+							class="menu-item hover:underline underline-offset-4"
+							href={menu.link}
+							on:click={() => onTapMenu(menu.link)}>{menu.title}</a
 						>
 						{#if menu.submenus}
 							<div class="dropdown-content">
 								{#each menu.submenus as submenu}
 									<div class="submenu">
-										<a href={submenu.link}>{submenu.title}</a>
+										<a href={submenu.link} on:click={() => onTapMenu(submenu.link)}
+											>{submenu.title}</a
+										>
 										{#if submenu.submenus}
 											<div class="sub-dropdown-content">
 												{#each submenu.submenus as thirdmenu}
-													<a href={thirdmenu.link}>{thirdmenu.title}</a>
+													<a href={thirdmenu.link} on:click={() => onTapMenu(thirdmenu.link)}
+														>{thirdmenu.title}</a
+													>
 												{/each}
 											</div>
 										{/if}

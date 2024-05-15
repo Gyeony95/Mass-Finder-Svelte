@@ -1,10 +1,10 @@
-interface Menu {
+export interface Menu {
     title: string;
     link: string;
     submenus?: SubMenu[];
 }
 
-interface SubMenu {
+export interface SubMenu {
     title: string;
     link: string;
     submenus?: SubMenu[];
