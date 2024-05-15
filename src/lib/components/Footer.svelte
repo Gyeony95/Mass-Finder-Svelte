@@ -17,10 +17,10 @@
 					<a href="/common/term" class="text-gray-600">이용약관</a>
 				</p>
 				<p class="mb-4">
-					<a href="/" class="text-gray-600">개인정보 처리방침</a>
+					<a href="/common/privacy" class="text-gray-600">개인정보 처리방침</a>
 				</p>
 				<p class="mb-4">
-					<a href="/" class="text-gray-600">이메일주소 무단 수집 거부</a>
+					<a href="/common/email" class="text-gray-600">이메일주소 무단 수집 거부</a>
 				</p>
 			</div>
 			<div>
