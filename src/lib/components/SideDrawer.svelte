@@ -15,7 +15,7 @@
 		if (menu && menu.submenus) {
 			menuItems = menu.submenus || [];
 		}
-		_activeMenu = getActiveRoute();
+		_activeMenu = '/' + getActiveRoute();
 	});
 
 	function getActiveRoute(): string {
@@ -27,6 +27,7 @@
 		if (menu && menu.submenus) {
 			menuItems = menu.submenus || [];
 		}
+		_activeMenu = '/' + getActiveRoute();
 	});
 </script>
 
