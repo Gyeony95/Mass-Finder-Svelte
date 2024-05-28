@@ -23,9 +23,9 @@
 	<div class="max-w-7xl mx-auto">
 		<div class="flex justify-between items-center py-4">
 			<div>
-				<a class="mx-5 font-extrabold text-xl" href="/">삼원파워감속기</a>
+				<a class="mx-5 font-extrabold text-xl" href="/">Mass Finder</a>
 			</div>
-			<div class="flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 m-auto">
+			<!-- <div class="flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 m-auto">
 				{#each menus as menu}
 					<div class="menu">
 						<a
@@ -55,7 +55,7 @@
 						{/if}
 					</div>
 				{/each}
-			</div>
+			</div> -->
 		</div>
 	</div>
 </nav>

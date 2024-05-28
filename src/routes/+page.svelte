@@ -1,114 +1,118 @@
 <script lang="ts">
-	import GHCarousel from '$lib/components/GhCarousel.svelte';
-	import ProductItem from '$lib/components/ProductItem.svelte';
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
-	export let props: any;
 
-	var showcase = [
-		{
-			name: 'Electronics',
-			expand: {
-				products: [
-					{
-						id: '1',
-						name: 'Smartphone',
-						image: 'images/main_banner_1.webp',
-						slug: 'smartphone'
-					},
-					{
-						id: '2',
-						name: 'Laptop',
-						image: 'images/main_banner_2.webp',
-						slug: 'laptop'
-					},
-					{
-						id: '3',
-						name: 'Laptop',
-						image: 'images/main_banner_3.webp',
-						slug: 'laptop'
-					}
-				]
+	let sketcher: ChemDoodle.SketcherCanvas;
+
+	onMount(() => {
+		// changes the default JMol color of hydrogen to black so it appears on white backgrounds
+		ChemDoodle.ELEMENT['H'].jmolColor = 'black';
+		// darkens the default JMol color of sulfur so it appears on white backgrounds
+		ChemDoodle.ELEMENT['S'].jmolColor = '#B9A130';
+		// initializes the SketcherCanvas
+		sketcher = new ChemDoodle.SketcherCanvas('sketcher', 500, 300, {
+			useServices: true,
+			oneMolecule: false
+		});
+		// sets terminal carbon labels to display
+		sketcher.styles.atoms_displayTerminalCarbonLabels_2D = true;
+		// sets atom labels to be colored by JMol colors, which are easy to recognize
+		sketcher.styles.atoms_useJMOLColors = true;
+		// enables overlap clear widths, so that some depth is introduced to overlapping bonds
+		sketcher.styles.bonds_clearOverlaps_2D = true;
+		// sets the shape color to improve contrast when drawing figures
+		sketcher.styles.shapes_color = 'c10000';
+		// because we do not load any content, we need to repaint the sketcher, otherwise we would just see an empty area with the toolbar
+		// however, you can instead use one of the Canvas.load... functions to pre-populate the canvas with content, then you don't need to call repaint
+		sketcher.repaint();
+	});
+
+	function onTapButton() {
+		let mol = sketcher.getMolecule();
+		let dummy = new ChemDoodle.io.JSONInterpreter().molTo(mol);
+		let obj = new ChemDoodle.io.JSONInterpreter().molFrom(dummy);
+		let asString = JSON.stringify(obj);
+		console.log('ghghgh ' + asString);
+		// 프로판 구조 추출 및 화학식 생성
+		let atomCounts = countAtoms(mol);
+		atomCounts = addHydrogenAtoms(atomCounts);
+		const molecularFormula = createMolecularFormula(atomCounts);
+
+		console.log(molecularFormula); // "C3H8"
+	}
+
+	// 원자 개수를 세는 함수
+	function countAtoms(json: any) {
+		const atomCounts: { [key: string]: number } = {};
+
+		json.atoms.forEach((atom: any) => {
+			const label = atom.label;
+			if (atomCounts[label]) {
+				atomCounts[label]++;
+			} else {
+				atomCounts[label] = 1;
 			}
+		});
+
+		return atomCounts;
+	}
+
+	// 프로판의 수소 원자 추가 함수
+	function addHydrogenAtoms(atomCounts: { [key: string]: number }) {
+		// 프로판(C3H8)의 수소 원자 개수는 8
+		atomCounts['H'] = 8;
+		return atomCounts;
+	}
+
+	// 화학식 문자열을 만드는 함수
+	function createMolecularFormula(atomCounts: { [key: string]: number }) {
+		let formula = '';
+
+		for (const atom in atomCounts) {
+			formula += atom + atomCounts[atom];
 		}
-	];
+
+		return formula;
+	}
 </script>
 
 <svelte:head>
-	<title>삼원파워감속기</title>
+	<title>Mass Finder</title>
+	<link rel="stylesheet" href="chem_doodle/install/ChemDoodleWeb.css" type="text/css" />
+	<script type="text/javascript" src="chem_doodle/install/ChemDoodleWeb.js"></script>
+	<link rel="stylesheet" href="chem_doodle/install/uis/jquery-ui-1.11.4.css" type="text/css" />
+	<script type="text/javascript" src="chem_doodle/install/uis/ChemDoodleWeb-uis.js"></script>
 </svelte:head>
 
-<div>
-	<GHCarousel />
-	<div class="mx-3 md:mx-10">
-		<section class="text-gray-800 text-center lg:text-left lg:px-32 lg:py-5">
-			<div class="grid lg:grid-cols-2 gap-6 xl:gap-12 justify-center">
-				<div class="mb-6 lg:mb-0">
-					<h3 class="mt-4 text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight">고객센터</h3>
-					<p class="mt-4 text-lg">궁금하신 점이 있으시면 언제든지 연락주시기 바랍니다.</p>
-					<p class="mt-2 text-2xl md:text-2xl xl:text-3xl">031-434-6771</p>
-					<p class="mt-2 text-1xl md:text-1xl xl:text-2xl">swdisco@naver.com</p>
-				</div>
-				<div class="mb-6 lg:mb-0">
-					<!-- <p class="text-gray-500 text-lg">
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex eum iste repudiandae nisi
-						modi placeat velit repellendus, tempore voluptates facere maiores praesentium harum
-						deleniti voluptatibus laudantium quasi quos recusandae soluta ullam maxime quaerat
-						debitis beatae accusamus reprehenderit! Eius veniam itaque numquam aliquid officiis
-						nemo, quidem maxime, maiores aliquam officia voluptatum.
-					</p> -->
-					<h3 class="mt-4 text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight">
-						제작의뢰하기
-					</h3>
-					<p class="mt-4 text-lg">제작문의를 해주시면 최선을 다해서 맞추어 드리겠습니다.</p>
-					<button class="mt-2 shortcut-button">바로가기</button>
-				</div>
-				<iframe
-					src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3173.0109088325144!2d126.73651381530466!3d37.31856927984502!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b717875a97c7f%3A0x47bc6e6fa7dfc704!2z6rK96riw64-EIOyViOyCsOyLnCDri6jsm5Dqtawg7ISx6rOh64-ZIOuyiOyYgTHroZwgNjU!5e0!3m2!1sko!2skr!4v1626243439869!5m2!1sko!2skr"
-					width="100%"
-					height="250"
-					style="border:0;"
-					loading="lazy"
-				/>
-			</div>
-		</section>
-	</div>
-	<div class=" bg-[#f4f6f7]">
-		<div class="pt-10 pb-10 pl-10 pr-10">
-			{#each showcase as showsection}
-				<div class="grid gap-12 grid-cols-2 lg:grid-cols-4">
-					{#each showsection.expand.products as product (product.id)}
-						<ProductItem
-							title={product.name}
-							image={product.image}
-							hoverImage={product.image}
-							link="/products/{product.slug}"
-						/>
-					{/each}
-				</div>
-			{/each}
-		</div>
-	</div>
-</div>
+<main>
+	<h1>ChemDoodle Web Components Example</h1>
+	<canvas id="sketcher" width="500" height="500" />
+	<button on:click={onTapButton}>Extract SMILES</button>
+</main>
 
 <style>
-	/* 기본 버튼 스타일 */
-	.shortcut-button {
-		padding: 6px 24px; /* 패딩 조정 */
-		background-color: white; /* 배경색 */
-		color: black; /* 글자색 */
-		border: 1px solid black; /* 테두리 스타일 */
-		text-decoration: none; /* 텍스트 밑줄 제거 */
-		font-size: 16px; /* 글자 크기 */
-		transition: all 0.3s; /* 부드러운 전환 효과 */
-		cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-		display: inline-block; /* 적절한 위치에 디스플레이 */
+	h1 {
+		text-align: center;
+		margin-bottom: 20px;
 	}
 
-	/* 호버 시의 스타일 */
-	.shortcut-button:hover {
-		background-color: #2557ab; /* 호버 시 배경색 */
-		color: white; /* 호버 시 글자색 */
-		border-color: #2557ab; /* 호버 시 테두리 색 */
+	canvas {
+		display: block;
+		margin: 0 auto;
+		border: 1px solid #ccc;
+	}
+
+	button {
+		display: block;
+		margin: 20px auto;
+		padding: 10px 20px;
+		background-color: #007bff;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+
+	button:hover {
+		background-color: #0056b3;
 	}
 </style>

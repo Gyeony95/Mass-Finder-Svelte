@@ -1628,6 +1628,11 @@ once@^1.3.0:
   dependencies:
     wrappy "1"
 
+openchemlib@^8.11.0:
+  version "8.11.0"
+  resolved "https://registry.npmjs.org/openchemlib/-/openchemlib-8.11.0.tgz"
+  integrity sha512-+7ZFSxSEG1rxdUFZEodDVOiTwapeK3hNX0iOgjy7nyL7SSzoFdjK/65jYoTNcgwT5xz1CXXe7Ep3YZiKlmgeSA==
+
 optionator@^0.9.3:
   version "0.9.3"
   resolved "https://registry.npmjs.org/optionator/-/optionator-0.9.3.tgz"

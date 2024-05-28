@@ -3,13 +3,12 @@
 		<div class="grid grid-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 			<div>
 				<h1 class="uppercase font-semibold mb-4 flex items-center justify-center md:justify-start">
-					Samwon Cyclo
+					Mass Finder
 				</h1>
-				<p>Continuously Variable Transmission (CVT)</p>
-				<p>Gearbox</p>
-				<p>Direct Coupled Motor Type</p>
-				<p>Vertical, Double-Axis, Line-Power Type</p>
-				<p>Cyclo Reducer</p>
+				<p>어쩌구 저쩌구</p>
+				<p>어쩌구 저쩌구</p>
+				<p>어쩌구 저쩌구</p>
+				<p>어쩌구 저쩌구</p>
 			</div>
 			<div>
 				<h1 class="uppercase font-semibold mb-4 flex justify-center md:justify-start">Policy</h1>
@@ -52,7 +51,7 @@
 							/>
 						</svg>
 					</span>
-					경기 안산시 단원구 번영1로 65 (성곡동) 시화산단 4라 506호 시화타원지식산업센터
+					사무실주소 넣는곳
 				</p>
 				<p class="flex items-center justify-center md:justify-start mb-4">
 					<span class="icon-container">
@@ -72,7 +71,7 @@
 							/>
 						</svg>
 					</span>
-					swdisco@naver.com
+					이메일@naver.com
 				</p>
 				<p class="flex items-center justify-center md:justify-start mb-4">
 					<span class="icon-container">
@@ -94,7 +93,7 @@
 							/>
 						</svg>
 					</span>
-					(031) 434-6771
+					(031) 000-0000
 				</p>
 			</div>
 		</div>
