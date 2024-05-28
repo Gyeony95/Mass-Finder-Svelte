@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>삼원파워감속기</title>
+	<title>Mass Finder</title>
 	<meta
 		name="description"
 		content="E-commerce solution built with SvelteKit, a headless CMS integration, uses Stripe for payments, providing better performance and faster development time"
