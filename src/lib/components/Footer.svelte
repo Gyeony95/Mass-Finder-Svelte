@@ -99,7 +99,7 @@
 		</div>
 	</div>
 	<div class="text-center p-6 bg-gray-200">
-		<a href="https://github.com/SwiftMarket">© 2024, Samwon Cyclo</a>
+		<a href="https://github.com/SwiftMarket">© 2024, Mass Finder</a>
 	</div>
 </footer>
 
