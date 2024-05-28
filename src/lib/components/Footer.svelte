@@ -13,22 +13,22 @@
 			<div>
 				<h1 class="uppercase font-semibold mb-4 flex justify-center md:justify-start">Policy</h1>
 				<p class="mb-4">
-					<a href="/common/term" class="text-gray-600">이용약관</a>
+					<a href="/" class="text-gray-600">이용약관</a>
 				</p>
 				<p class="mb-4">
-					<a href="/common/privacy" class="text-gray-600">개인정보 처리방침</a>
+					<a href="/" class="text-gray-600">개인정보 처리방침</a>
 				</p>
 				<p class="mb-4">
-					<a href="/common/email" class="text-gray-600">이메일주소 무단 수집 거부</a>
+					<a href="/" class="text-gray-600">이메일주소 무단 수집 거부</a>
 				</p>
 			</div>
 			<div>
 				<h1 class="uppercase font-semibold mb-4 flex justify-center md:justify-start">About</h1>
 				<p class="mb-4">
-					<a href="#!" class="text-gray-600">Blog</a>
+					<a href="/" class="text-gray-600">Blog</a>
 				</p>
 				<p>
-					<a href="#!" class="text-gray-600">FAQ</a>
+					<a href="/" class="text-gray-600">FAQ</a>
 				</p>
 			</div>
 			<div>
