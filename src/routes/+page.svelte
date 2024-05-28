@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { writable } from 'svelte/store';
 
 	let sketcher: ChemDoodle.SketcherCanvas;
+	let molecularFormula = writable('');
 
 	onMount(() => {
 		// changes the default JMol color of hydrogen to black so it appears on white backgrounds
@@ -35,9 +37,10 @@
 		// 프로판 구조 추출 및 화학식 생성
 		let atomCounts = countAtoms(mol);
 		atomCounts = addHydrogenAtoms(atomCounts, mol);
-		const molecularFormula = createMolecularFormula(atomCounts);
+		const molecularFormulaValue = createMolecularFormula(atomCounts);
 
-		console.log(molecularFormula); // "C5H12"
+		console.log(molecularFormulaValue); // "C5H12"
+		molecularFormula.set(molecularFormulaValue);
 	}
 
 	// 원자 개수를 세는 함수
@@ -107,35 +110,62 @@
 </svelte:head>
 
 <main>
-	<h1>ChemDoodle Web Components Example</h1>
+	<h1>Chemical Draw Canvas</h1>
 	<canvas id="sketcher" width="500" height="500" />
 	<button on:click={onTapButton}>Extract SMILES</button>
+	<p>{$molecularFormula}</p>
 </main>
 
 <style>
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 20px;
+		background-color: #f5f5f5;
+		border-radius: 10px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		max-width: 600px;
+		margin: 40px auto;
+	}
+
 	h1 {
-		text-align: center;
+		font-family: 'Arial', sans-serif;
+		font-size: 24px;
+		color: #333;
 		margin-bottom: 20px;
 	}
 
 	canvas {
-		display: block;
-		margin: 0 auto;
-		border: 1px solid #ccc;
+		border: 2px solid #ccc;
+		border-radius: 10px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	}
 
 	button {
-		display: block;
-		margin: 20px auto;
-		padding: 10px 20px;
+		margin-top: 20px;
+		padding: 12px 24px;
 		background-color: #007bff;
 		color: white;
 		border: none;
-		border-radius: 5px;
+		border-radius: 25px;
 		cursor: pointer;
+		font-size: 16px;
+		transition: background-color 0.3s ease;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	}
 
 	button:hover {
 		background-color: #0056b3;
+	}
+
+	button:active {
+		background-color: #004494;
+	}
+
+	p {
+		margin-top: 20px;
+		font-size: 18px;
+		color: #333;
 	}
 </style>
