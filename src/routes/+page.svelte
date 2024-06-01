@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { Molecule } from '$lib/model/atom';
 
 	let sketcher: ChemDoodle.SketcherCanvas;
 	let molecularFormula = writable('');
@@ -33,72 +34,76 @@
 		let dummy = new ChemDoodle.io.JSONInterpreter().molTo(mol);
 		let obj = new ChemDoodle.io.JSONInterpreter().molFrom(dummy);
 		let asString = JSON.stringify(obj);
+		const molecule = Molecule.fromJson(asString);
+
+		console.log('Molecule JSON:', molecule.getMoleculeJson());
+		console.log('Molecular Formula:', molecule.getMolecularFormula());
 		console.log('ghghgh ' + asString);
-		// 프로판 구조 추출 및 화학식 생성
-		let atomCounts = countAtoms(mol);
-		atomCounts = addHydrogenAtoms(atomCounts, mol);
-		const molecularFormulaValue = createMolecularFormula(atomCounts);
+		// // 프로판 구조 추출 및 화학식 생성
+		// let atomCounts = countAtoms(mol);
+		// atomCounts = addHydrogenAtoms(atomCounts, mol);
+		// const molecularFormulaValue = createMolecularFormula(atomCounts);
 
-		console.log(molecularFormulaValue); // "C5H12"
-		molecularFormula.set(molecularFormulaValue);
+		console.log(molecule.getMolecularFormula()); // "C5H12"
+		molecularFormula.set(molecule.getMolecularFormula());
 	}
 
-	// 원자 개수를 세는 함수
-	function countAtoms(json: any) {
-		const atomCounts: { [key: string]: number } = {};
+	// // 원자 개수를 세는 함수
+	// function countAtoms(json: any) {
+	// 	const atomCounts: { [key: string]: number } = {};
 
-		json.atoms.forEach((atom: any) => {
-			const label = atom.label;
-			if (atomCounts[label]) {
-				atomCounts[label]++;
-			} else {
-				atomCounts[label] = 1;
-			}
-		});
+	// 	json.atoms.forEach((atom: any) => {
+	// 		const label = atom.label;
+	// 		if (atomCounts[label]) {
+	// 			atomCounts[label]++;
+	// 		} else {
+	// 			atomCounts[label] = 1;
+	// 		}
+	// 	});
 
-		return atomCounts;
-	}
+	// 	return atomCounts;
+	// }
 
-	// 수소 원자 추가 함수
-	function addHydrogenAtoms(atomCounts: { [key: string]: number }, json: any) {
-		// 각 탄소 원자가 4개의 결합을 갖도록 수소 원자를 추가합니다.
-		let carbonBonds: { [key: number]: number } = {};
-		json.bonds.forEach((bond: any) => {
-			if (bond.a1.label === 'C') {
-				if (carbonBonds[bond.a1.pid]) {
-					carbonBonds[bond.a1.pid]++;
-				} else {
-					carbonBonds[bond.a1.pid] = 1;
-				}
-			}
-			if (bond.a2.label === 'C') {
-				if (carbonBonds[bond.a2.pid]) {
-					carbonBonds[bond.a2.pid]++;
-				} else {
-					carbonBonds[bond.a2.pid] = 1;
-				}
-			}
-		});
+	// // 수소 원자 추가 함수
+	// function addHydrogenAtoms(atomCounts: { [key: string]: number }, json: any) {
+	// 	// 각 탄소 원자가 4개의 결합을 갖도록 수소 원자를 추가합니다.
+	// 	let carbonBonds: { [key: number]: number } = {};
+	// 	json.bonds.forEach((bond: any) => {
+	// 		if (bond.a1.label === 'C') {
+	// 			if (carbonBonds[bond.a1.pid]) {
+	// 				carbonBonds[bond.a1.pid]++;
+	// 			} else {
+	// 				carbonBonds[bond.a1.pid] = 1;
+	// 			}
+	// 		}
+	// 		if (bond.a2.label === 'C') {
+	// 			if (carbonBonds[bond.a2.pid]) {
+	// 				carbonBonds[bond.a2.pid]++;
+	// 			} else {
+	// 				carbonBonds[bond.a2.pid] = 1;
+	// 			}
+	// 		}
+	// 	});
 
-		// 탄소 원자마다 부족한 결합 수만큼 수소 원자를 추가합니다.
-		let hydrogenCount = 0;
-		for (const pid in carbonBonds) {
-			hydrogenCount += 4 - carbonBonds[pid];
-		}
-		atomCounts['H'] = hydrogenCount;
-		return atomCounts;
-	}
+	// 	// 탄소 원자마다 부족한 결합 수만큼 수소 원자를 추가합니다.
+	// 	let hydrogenCount = 0;
+	// 	for (const pid in carbonBonds) {
+	// 		hydrogenCount += 4 - carbonBonds[pid];
+	// 	}
+	// 	atomCounts['H'] = hydrogenCount;
+	// 	return atomCounts;
+	// }
 
-	// 화학식 문자열을 만드는 함수
-	function createMolecularFormula(atomCounts: { [key: string]: number }) {
-		let formula = '';
+	// // 화학식 문자열을 만드는 함수
+	// function createMolecularFormula(atomCounts: { [key: string]: number }) {
+	// 	let formula = '';
 
-		for (const atom in atomCounts) {
-			formula += atom + atomCounts[atom];
-		}
+	// 	for (const atom in atomCounts) {
+	// 		formula += atom + atomCounts[atom];
+	// 	}
 
-		return formula;
-	}
+	// 	return formula;
+	// }
 </script>
 
 <svelte:head>
