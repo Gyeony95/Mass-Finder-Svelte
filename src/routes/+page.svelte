@@ -5,6 +5,7 @@
 
 	let sketcher: ChemDoodle.SketcherCanvas;
 	let molecularFormula = writable('');
+	let molecularWeight = writable('');
 
 	onMount(() => {
 		// changes the default JMol color of hydrogen to black so it appears on white backgrounds
@@ -38,6 +39,7 @@
 
 		console.log('Molecule JSON:', molecule.getMoleculeJson());
 		console.log('Molecular Formula:', molecule.getMolecularFormula());
+		console.log('Molecular Weight:', molecule.getMolecularWeight());
 		console.log('ghghgh ' + asString);
 		// // 프로판 구조 추출 및 화학식 생성
 		// let atomCounts = countAtoms(mol);
@@ -46,6 +48,7 @@
 
 		console.log(molecule.getMolecularFormula()); // "C5H12"
 		molecularFormula.set(molecule.getMolecularFormula());
+		molecularWeight.set(molecule.getMolecularWeight().toString());
 	}
 
 	// // 원자 개수를 세는 함수
@@ -119,6 +122,7 @@
 	<canvas id="sketcher" width="500" height="500" />
 	<button on:click={onTapButton}>Extract SMILES</button>
 	<p>{$molecularFormula}</p>
+	<p>{$molecularWeight}</p>
 </main>
 
 <style>
