@@ -76,7 +76,9 @@ export class Molecule {
         const elementCount: { [key: string]: number } = {};
         const hydrogenCount: { [key: string]: number } = {};
 
+        /// ## 1. 원소 개수 세기
         this.atoms.forEach(atom => {
+            // Map에 각 원소가 이미 있으면 value 에 1을 더해주고 없으면 새로 추가 후 value를 1로 셋팅
             if (elementCount[atom.label]) {
                 elementCount[atom.label]++;
             } else {
@@ -84,19 +86,26 @@ export class Molecule {
             }
         });
 
+        /// ## 2. 수소 원자 개수 계산
         this.atoms.forEach(atom => {
+            // 각 원소별 최대 결합의 수
             const valence = this.valenceElectrons[atom.label] || 0;
+            // 해당 원자에 연결된 진짜 결합의 수
             const bonds = this.bonds.filter(bond => bond.a1.pid === atom.pid || bond.a2.pid === atom.pid);
+            // 최대 결합수 - 진짜 겹합수 해서 필요한 수소의 갯수 가져옴
             const hydrogenNeeded = valence - bonds.length;
             if (hydrogenNeeded > 0) {
                 hydrogenCount['H'] = (hydrogenCount['H'] || 0) + hydrogenNeeded;
             }
         });
 
+        // 위에서 더 필요한 수소가 있다고 판된됐을때 총 수소의 수에 더해줌
         if (hydrogenCount['H']) {
             elementCount['H'] = (elementCount['H'] || 0) + hydrogenCount['H'];
         }
 
+        /// ## 3. 화학식 생성
+        // 각 요소를 순회하면서 갯수를 도출하여 join
         return Object.keys(elementCount).map(element => {
             const count = elementCount[element];
             return count > 1 ? `${element}${count}` : element;
