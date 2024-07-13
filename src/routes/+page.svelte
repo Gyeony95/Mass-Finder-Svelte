@@ -2,16 +2,17 @@
 	import IonSelector from '$lib/components/IonSelector.svelte';
 	import FormylationSelector from '$lib/components/FormylationSelector.svelte';
 	import AminoMapSelector from '$lib/components/AminoMapSelector.svelte';
+	import NcAAInputArea from '$lib/components/NcAAInputArea.svelte';
 
 	let exactMass: number | null = null;
 	let essentialSequence: string = '';
 	let formylation: string = 'yes';
 	let adduct: string = 'H';
 	let selectedAminos: { [key: string]: boolean } = {};
-	let ncAA: { [key: string]: string } = { B: '', J: '', O: '', U: '', X: '', Z: '' };
+	let ncAA: { [key: string]: number } = { B: 0.0, J: 0.0, O: 0.0, U: 0.0, X: 0.0, Z: 0.0 };
 
 	function handleCalculate(): void {
-		console.log('Calculating with selected aminos:', selectedAminos);
+		console.log('Calculating with selected aminos:', selectedAminos, 'ncAA:', ncAA);
 	}
 
 	function handleFormylationChange(newFormylation: string): void {
@@ -20,6 +21,10 @@
 
 	function handleAdductChange(newAdduct: string): void {
 		adduct = newAdduct;
+	}
+
+	function handleNcAAChange(newNcAA: { [key: string]: number }): void {
+		ncAA = newNcAA;
 	}
 </script>
 
@@ -40,13 +45,8 @@
 	<div class="form-group">
 		<AminoMapSelector on:changeAminos={(e) => (selectedAminos = e.detail)} />
 	</div>
-	<div class="form-group ncaa-inputs">
-		{#each Object.keys(ncAA) as key}
-			<div>
-				<label>{key} :</label>
-				<input type="text" bind:value={ncAA[key]} />
-			</div>
-		{/each}
+	<div class="form-group">
+		<NcAAInputArea bind:initNcAA={ncAA} on:changeNcAA={(e) => handleNcAAChange(e.detail)} />
 	</div>
 	<button type="button" class="calculate" on:click={handleCalculate}>Calculate!</button>
 </div>
