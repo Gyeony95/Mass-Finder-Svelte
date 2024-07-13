@@ -1,4 +1,5 @@
 <script lang="ts">
+	import FormylationSelector from '$lib/components/FormylationSelector.svelte';
 	import AminoMapSelector from '$lib/components/AminoMapSelector.svelte';
 
 	let exactMass: number | null = null;
@@ -6,12 +7,15 @@
 	let formylation: string = 'yes';
 	let adduct: string = 'H';
 	let selectedAminos: { [key: string]: boolean } = {};
+	let ncAA: { [key: string]: string } = { B: '', J: '', O: '', U: '', X: '', Z: '' };
 
 	function handleCalculate(): void {
 		console.log('Calculating with selected aminos:', selectedAminos);
 	}
 
-	let ncAA: { [key: string]: string } = { B: '', J: '', O: '', U: '', X: '', Z: '' };
+	function handleFormylationChange(newFormylation: string): void {
+		formylation = newFormylation;
+	}
 </script>
 
 <div class="container">
@@ -22,11 +26,8 @@
 	<div class="form-group">
 		<input type="text" bind:value={essentialSequence} placeholder="Essential Sequence (Option)" />
 	</div>
-	<div class="form-group radio-group">
-		<label>Formylation</label>
-		<label><input type="radio" bind:group={formylation} value="yes" /> yes</label>
-		<label><input type="radio" bind:group={formylation} value="no" /> no</label>
-		<label><input type="radio" bind:group={formylation} value="unknown" /> unknown</label>
+	<div class="form-group">
+		<FormylationSelector on:change={(e) => handleFormylationChange(e.detail)} />
 	</div>
 	<div class="form-group radio-group">
 		<label>Adduct</label>
