@@ -1,42 +1,17 @@
 <script lang="ts">
+	import AminoMapSelector from '$lib/components/AminoMapSelector.svelte';
+
 	let exactMass: number | null = null;
 	let essentialSequence: string = '';
 	let formylation: string = 'yes';
 	let adduct: string = 'H';
-	let aminoAcids: { [key: string]: boolean } = {
-		G: true,
-		A: true,
-		S: true,
-		T: true,
-		C: true,
-		V: true,
-		L: true,
-		I: true,
-		M: true,
-		P: true,
-		F: true,
-		Y: true,
-		W: true,
-		D: true,
-		E: true,
-		N: true,
-		Q: true,
-		H: true,
-		K: true,
-		R: true
-	};
-	let ncAA: { [key: string]: string } = { B: '', J: '', O: '', U: '', X: '', Z: '' };
+	let selectedAminos: { [key: string]: boolean } = {};
 
 	function handleCalculate(): void {
-		// Implement your calculation logic here
-		console.log('Calculating...');
+		console.log('Calculating with selected aminos:', selectedAminos);
 	}
 
-	function toggleAllAminoAcids(value: boolean): void {
-		for (let key in aminoAcids) {
-			aminoAcids[key] = value;
-		}
-	}
+	let ncAA: { [key: string]: string } = { B: '', J: '', O: '', U: '', X: '', Z: '' };
 </script>
 
 <div class="container">
@@ -61,18 +36,7 @@
 		<label><input type="radio" bind:group={adduct} value="unknown" /> unknown</label>
 	</div>
 	<div class="form-group">
-		<div class="amino-acids-header">
-			<label>Amino acid</label>
-			<div class="buttons">
-				<button type="button" on:click={() => toggleAllAminoAcids(false)}>All Uncheck</button>
-				<button type="button" on:click={() => toggleAllAminoAcids(true)}>STREP</button>
-			</div>
-		</div>
-		<div class="amino-acids">
-			{#each Object.keys(aminoAcids) as key}
-				<label><input type="checkbox" bind:checked={aminoAcids[key]} /> {key}</label>
-			{/each}
-		</div>
+		<AminoMapSelector on:changeAminos={(e) => (selectedAminos = e.detail)} />
 	</div>
 	<div class="form-group ncaa-inputs">
 		{#each Object.keys(ncAA) as key}
@@ -124,43 +88,6 @@
 		display: flex;
 		gap: 10px;
 		margin-bottom: 15px;
-	}
-	.amino-acids-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-	.amino-acids-header .buttons {
-		display: flex;
-		gap: 10px;
-	}
-	.amino-acids-header button {
-		padding: 5px 10px;
-		background-color: #add8e6;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		font-size: 14px;
-		transition: background-color 0.3s;
-	}
-	.amino-acids-header button:hover {
-		background-color: #87ceeb;
-	}
-	.amino-acids-header button:active {
-		background-color: #4682b4;
-	}
-	.amino-acids {
-		display: grid;
-		grid-template-columns: repeat(8, 1fr);
-		gap: 10px;
-		margin-bottom: 15px;
-	}
-	.amino-acids label {
-		display: flex;
-		align-items: center;
-	}
-	.amino-acids input[type='checkbox'] {
-		margin-right: 5px;
 	}
 	.ncaa-inputs {
 		display: grid;
