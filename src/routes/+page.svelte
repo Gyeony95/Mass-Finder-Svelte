@@ -1,4 +1,5 @@
 <script lang="ts">
+	import IonSelector from '$lib/components/IonSelector.svelte';
 	import FormylationSelector from '$lib/components/FormylationSelector.svelte';
 	import AminoMapSelector from '$lib/components/AminoMapSelector.svelte';
 
@@ -16,6 +17,10 @@
 	function handleFormylationChange(newFormylation: string): void {
 		formylation = newFormylation;
 	}
+
+	function handleAdductChange(newAdduct: string): void {
+		adduct = newAdduct;
+	}
 </script>
 
 <div class="container">
@@ -29,12 +34,8 @@
 	<div class="form-group">
 		<FormylationSelector on:change={(e) => handleFormylationChange(e.detail)} />
 	</div>
-	<div class="form-group radio-group">
-		<label>Adduct</label>
-		<label><input type="radio" bind:group={adduct} value="H" /> H</label>
-		<label><input type="radio" bind:group={adduct} value="Na" /> Na</label>
-		<label><input type="radio" bind:group={adduct} value="K" /> K</label>
-		<label><input type="radio" bind:group={adduct} value="unknown" /> unknown</label>
+	<div class="form-group">
+		<IonSelector on:change={(e) => handleAdductChange(e.detail)} />
 	</div>
 	<div class="form-group">
 		<AminoMapSelector on:changeAminos={(e) => (selectedAminos = e.detail)} />
