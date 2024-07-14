@@ -3,28 +3,71 @@
 	import FormylationSelector from '$lib/components/FormylationSelector.svelte';
 	import AminoMapSelector from '$lib/components/AminoMapSelector.svelte';
 	import NcAAInputArea from '$lib/components/NcAAInputArea.svelte';
+	import { MassFinderHelper } from '$lib/helper/mass_finder_helper';
+	import type { FormyType, IonType } from '../type/Types';
+
+	/// 아미노산들의 리스트
+	const aminoMap: { [key: string]: number } = {
+		G: 75.03,
+		A: 89.05,
+		S: 105.04,
+		T: 119.06,
+		C: 121.02,
+		V: 117.08,
+		L: 131.09,
+		I: 131.09,
+		M: 149.05,
+		P: 115.06,
+		F: 165.08,
+		Y: 181.07,
+		W: 204.09,
+		D: 133.04,
+		E: 147.05,
+		N: 132.05,
+		Q: 146.07,
+		H: 155.07,
+		K: 146.11,
+		R: 174.11
+	};
 
 	let exactMass: number | null = null;
 	let essentialSequence: string = '';
-	let formylation: string = 'yes';
-	let adduct: string = 'H';
-	let selectedAminos: { [key: string]: boolean } = {};
+	let formylation: FormyType = 'yes';
+	let adduct: IonType = 'H';
+	let selectedAminos: { [key: string]: number } = { ...aminoMap };
 	let ncAA: { [key: string]: number } = { B: 0.0, J: 0.0, O: 0.0, U: 0.0, X: 0.0, Z: 0.0 };
 
 	function handleCalculate(): void {
-		console.log('Calculating with selected aminos:', selectedAminos, 'ncAA:', ncAA);
+		const aminoMapMerged = { ...selectedAminos, ...ncAA };
+
+		const bestSolutions = MassFinderHelper.calcByIonType(
+			exactMass!,
+			essentialSequence,
+			formylation,
+			adduct,
+			aminoMapMerged
+		);
+		console.log('Best solutions:', bestSolutions);
 	}
 
-	function handleFormylationChange(newFormylation: string): void {
+	function handleFormylationChange(newFormylation: FormyType): void {
 		formylation = newFormylation;
 	}
 
-	function handleAdductChange(newAdduct: string): void {
+	function handleAdductChange(newAdduct: IonType): void {
 		adduct = newAdduct;
 	}
 
 	function handleNcAAChange(newNcAA: { [key: string]: number }): void {
 		ncAA = newNcAA;
+	}
+
+	function handleAminoMapChange(newAminos: { [key: string]: boolean }): void {
+		selectedAminos = Object.fromEntries(
+			Object.entries(newAminos)
+				.filter(([key, value]) => value)
+				.map(([key]) => [key, aminoMap[key]])
+		);
 	}
 </script>
 
@@ -43,7 +86,7 @@
 		<IonSelector on:change={(e) => handleAdductChange(e.detail)} />
 	</div>
 	<div class="form-group">
-		<AminoMapSelector on:changeAminos={(e) => (selectedAminos = e.detail)} />
+		<AminoMapSelector on:changeAminos={(e) => handleAminoMapChange(e.detail)} />
 	</div>
 	<div class="form-group">
 		<NcAAInputArea bind:initNcAA={ncAA} on:changeNcAA={(e) => handleNcAAChange(e.detail)} />

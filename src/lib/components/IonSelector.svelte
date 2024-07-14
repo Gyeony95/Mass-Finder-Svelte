@@ -1,34 +1,36 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { IonType } from '../../type/Types';
 
 	const dispatch = createEventDispatcher();
 
-	enum IonType {
-		H = 'H',
-		Na = 'Na',
-		K = 'K',
-		unknown = 'unknown'
-	}
-
-	type IonTypeKey = keyof typeof IonType;
-
-	let ionType: IonTypeKey = 'H';
+	let ionType: IonType = 'H';
 
 	function handleChange(event: Event) {
 		const target = event.target as HTMLInputElement;
-		ionType = target.value as IonTypeKey;
+		ionType = target.value as IonType;
 		dispatch('change', ionType);
 	}
 </script>
 
 <div class="ion-selector">
 	<label>Adduct</label>
-	{#each Object.keys(IonType) as key}
-		<label>
-			<input type="radio" value={key} bind:group={ionType} on:change={handleChange} />
-			{IonType[key]}
-		</label>
-	{/each}
+	<label>
+		<input type="radio" value="H" bind:group={ionType} on:change={handleChange} />
+		H
+	</label>
+	<label>
+		<input type="radio" value="Na" bind:group={ionType} on:change={handleChange} />
+		Na
+	</label>
+	<label>
+		<input type="radio" value="K" bind:group={ionType} on:change={handleChange} />
+		K
+	</label>
+	<label>
+		<input type="radio" value="unknown" bind:group={ionType} on:change={handleChange} />
+		Unknown
+	</label>
 </div>
 
 <style>
