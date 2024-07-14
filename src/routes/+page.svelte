@@ -5,6 +5,8 @@
 	import NcAAInputArea from '$lib/components/NcAAInputArea.svelte';
 	import { MassFinderHelper } from '$lib/helper/mass_finder_helper';
 	import type { FormyType, IonType } from '../type/Types';
+	import { getContext } from 'svelte';
+	import type { Writable } from 'svelte/store';
 
 	/// 기초 아미노산들의 리스트
 	const aminoMap: { [key: string]: number } = {
@@ -43,20 +45,31 @@
 	/// 사용자 지정 아미노산
 	let ncAA: { [key: string]: number } = { B: 0.0, J: 0.0, O: 0.0, U: 0.0, X: 0.0, Z: 0.0 };
 
-	/// Calculate! 버튼 클릭시 호출되는 메서드
-	function handleCalculate(): void {
-		// 기초 아미노산들 + 사용자 지정 아미노산을 합쳐서 경우의수를 구함
-		const aminoMapMerged = { ...selectedAminos, ...ncAA };
+	const loading = getContext<Writable<boolean>>('loading');
 
-		// 계산 결과
-		const bestSolutions = MassFinderHelper.calcByIonType(
-			exactMass!,
-			essentialSequence,
-			formylation,
-			adduct,
-			aminoMapMerged
-		);
-		console.log('Best solutions:', bestSolutions);
+	/// Calculate! 버튼 클릭시 호출되는 메서드
+	async function handleCalculate(): Promise<void> {
+		loading.set(true);
+
+		// 비동기로 처리하여 UI 업데이트를 보장
+		setTimeout(() => {
+			try {
+				// 기초 아미노산들 + 사용자 지정 아미노산을 합쳐서 경우의수를 구함
+				const aminoMapMerged = { ...selectedAminos, ...ncAA };
+
+				// 계산 결과
+				const bestSolutions = MassFinderHelper.calcByIonType(
+					exactMass!,
+					essentialSequence,
+					formylation,
+					adduct,
+					aminoMapMerged
+				);
+				console.log('Best solutions:', bestSolutions);
+			} finally {
+				loading.set(false);
+			}
+		}, 0);
 	}
 
 	function handleFormylationChange(newFormylation: FormyType): void {
@@ -113,6 +126,7 @@
 		background: #f9f9f9;
 		border-radius: 8px;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		position: relative;
 	}
 	.title {
 		text-align: center;
@@ -182,5 +196,33 @@
 	}
 	button.calculate:active {
 		background-color: #4682b4;
+	}
+	.loading-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(255, 255, 255, 0.8);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 10;
+	}
+	.loading-spinner {
+		border: 4px solid rgba(0, 0, 0, 0.1);
+		border-top: 4px solid #3498db;
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+		animation: spin 1s linear infinite;
+	}
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 </style>
