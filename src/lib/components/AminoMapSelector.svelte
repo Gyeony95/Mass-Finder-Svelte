@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
+	// 외부에서 입력받은 [changeAminos] 를 호출하기 위함
 	const dispatch = createEventDispatcher();
 
+	/// 사용할 아미노산의 모음, 초기값은 전체
 	let selectedAminos: { [key: string]: boolean } = {
 		G: true,
 		A: true,

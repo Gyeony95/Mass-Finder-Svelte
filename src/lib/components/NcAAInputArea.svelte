@@ -5,6 +5,7 @@
 
 	export let initNcAA: { [key: string]: number } = {};
 
+	/// 사용자가 입력할 수 있는 사용자 지정영역을 만듦
 	let ncaaMap: { [key: string]: number } = {
 		B: 0.0,
 		J: 0.0,

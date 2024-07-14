@@ -6,7 +6,7 @@
 	import { MassFinderHelper } from '$lib/helper/mass_finder_helper';
 	import type { FormyType, IonType } from '../type/Types';
 
-	/// 아미노산들의 리스트
+	/// 기초 아미노산들의 리스트
 	const aminoMap: { [key: string]: number } = {
 		G: 75.03,
 		A: 89.05,
@@ -30,16 +30,25 @@
 		R: 174.11
 	};
 
+	/// 내가 입력한 mass 값
 	let exactMass: number | null = null;
+	/// 필수로 들어가야 하는 아미노산이 있다면 여기다 기입(선택값)
 	let essentialSequence: string = '';
+	/// 포밀레이스 여부
 	let formylation: FormyType = 'yes';
+	/// 이온이 있는지 여부
 	let adduct: IonType = 'H';
+	/// Amino Acid 영역에서 선택된 아미노산의 종류, 초기값은 전체
 	let selectedAminos: { [key: string]: number } = { ...aminoMap };
+	/// 사용자 지정 아미노산
 	let ncAA: { [key: string]: number } = { B: 0.0, J: 0.0, O: 0.0, U: 0.0, X: 0.0, Z: 0.0 };
 
+	/// Calculate! 버튼 클릭시 호출되는 메서드
 	function handleCalculate(): void {
+		// 기초 아미노산들 + 사용자 지정 아미노산을 합쳐서 경우의수를 구함
 		const aminoMapMerged = { ...selectedAminos, ...ncAA };
 
+		// 계산 결과
 		const bestSolutions = MassFinderHelper.calcByIonType(
 			exactMass!,
 			essentialSequence,
@@ -62,6 +71,7 @@
 		ncAA = newNcAA;
 	}
 
+	/// Amino Selector 에서 값이 바뀌면 string : bool 형태로 내려오는데 이걸 string : number 형태로 바꿔서 저장
 	function handleAminoMapChange(newAminos: { [key: string]: boolean }): void {
 		selectedAminos = Object.fromEntries(
 			Object.entries(newAminos)

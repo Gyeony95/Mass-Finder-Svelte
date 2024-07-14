@@ -1,6 +1,7 @@
 import type { AminoModel } from '$lib/model/AminoModel.ts';
 
 
+/// 유사도 체크
 export function calculateSimilarity(a: number, b: number): number {
     const difference = Math.abs(a - b);
     let similarity = 100 - ((difference / a) * 100);
@@ -8,6 +9,7 @@ export function calculateSimilarity(a: number, b: number): number {
     return similarity < 0 ? 0 : similarity;
 }
 
+// 기준 크기로 정렬
 export function sortAmino(list: AminoModel[], compareValue: number): AminoModel[] {
     return list.sort((a, b) => {
         const diffA = Math.abs((a.weight ?? 0) - compareValue);
@@ -16,6 +18,7 @@ export function sortAmino(list: AminoModel[], compareValue: number): AminoModel[
     });
 }
 
+// 리스트 중복제거
 export function removeDuplicates(inputList: AminoModel[]): AminoModel[] {
     const uniqueMap: { [key: string]: AminoModel } = {};
     inputList.forEach(aminoModel => {
