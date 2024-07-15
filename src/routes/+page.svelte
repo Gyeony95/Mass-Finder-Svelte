@@ -3,6 +3,7 @@
 	import FormylationSelector from '$lib/components/FormylationSelector.svelte';
 	import AminoMapSelector from '$lib/components/AminoMapSelector.svelte';
 	import NcAAInputArea from '$lib/components/NcAAInputArea.svelte';
+	import ResultTable from '$lib/components/ResultTable.svelte';
 	import { MassFinderHelper } from '$lib/helper/mass_finder_helper';
 	import type { FormyType, IonType } from '../type/Types';
 	import { getContext } from 'svelte';
@@ -47,6 +48,8 @@
 
 	const loading = getContext<Writable<boolean>>('loading');
 
+	let bestSolutions: any[] = [];
+
 	/// Calculate! 버튼 클릭시 호출되는 메서드
 	async function handleCalculate(): Promise<void> {
 		loading.set(true);
@@ -58,7 +61,7 @@
 				const aminoMapMerged = { ...selectedAminos, ...ncAA };
 
 				// 계산 결과
-				const bestSolutions = MassFinderHelper.calcByIonType(
+				bestSolutions = MassFinderHelper.calcByIonType(
 					exactMass!,
 					essentialSequence,
 					formylation,
@@ -115,11 +118,14 @@
 		<NcAAInputArea bind:initNcAA={ncAA} on:changeNcAA={(e) => handleNcAAChange(e.detail)} />
 	</div>
 	<button type="button" class="calculate" on:click={handleCalculate}>Calculate!</button>
+	{#if exactMass !== null && bestSolutions.length > 0}
+		<ResultTable {bestSolutions} {exactMass} />
+	{/if}
 </div>
 
 <style>
 	.container {
-		max-width: 600px;
+		max-width: 700px;
 		margin: 0 auto;
 		padding: 20px;
 		font-family: Arial, sans-serif;
