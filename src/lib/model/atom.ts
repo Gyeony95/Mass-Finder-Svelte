@@ -100,14 +100,24 @@ export class Molecule {
             }
         });
 
-        /// ## 2. 수소 원자 개수 계산
+        // /// ## 2. 수소 원자 개수 계산
+        // this.atoms.forEach(atom => {
+        //     // 각 원소별 최대 결합의 수
+        //     const valence = this.valenceElectrons[atom.label] || 0;
+        //     // 해당 원자에 연결된 진짜 결합의 수
+        //     const bonds = this.bonds.filter(bond => bond.a1.pid === atom.pid || bond.a2.pid === atom.pid);
+        //     // 최대 결합수 - 진짜 겹합수 해서 필요한 수소의 갯수 가져옴
+        //     const hydrogenNeeded = valence - bonds.length;
+        //     if (hydrogenNeeded > 0) {
+        //         hydrogenCount['H'] = (hydrogenCount['H'] || 0) + hydrogenNeeded;
+        //     }
+        // });
+
         this.atoms.forEach(atom => {
-            // 각 원소별 최대 결합의 수
             const valence = this.valenceElectrons[atom.label] || 0;
-            // 해당 원자에 연결된 진짜 결합의 수
             const bonds = this.bonds.filter(bond => bond.a1.pid === atom.pid || bond.a2.pid === atom.pid);
-            // 최대 결합수 - 진짜 겹합수 해서 필요한 수소의 갯수 가져옴
-            const hydrogenNeeded = valence - bonds.length;
+            const totalBondOrder = bonds.reduce((sum, bond) => sum + bond.bondOrder, 0);
+            const hydrogenNeeded = valence - totalBondOrder;
             if (hydrogenNeeded > 0) {
                 hydrogenCount['H'] = (hydrogenCount['H'] || 0) + hydrogenNeeded;
             }
