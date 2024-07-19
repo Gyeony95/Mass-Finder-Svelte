@@ -15,7 +15,7 @@
 		// initializes the SketcherCanvas
 		sketcher = new ChemDoodle.SketcherCanvas('sketcher', 500, 300, {
 			useServices: true,
-			oneMolecule: false
+			oneMolecule: true
 		});
 		// sets terminal carbon labels to display
 		sketcher.styles.atoms_displayTerminalCarbonLabels_2D = true;
