@@ -53,12 +53,16 @@
 	/// Calculate! 버튼 클릭시 호출되는 메서드
 	async function handleCalculate(): Promise<void> {
 		loading.set(true);
-
 		// 비동기로 처리하여 UI 업데이트를 보장
 		setTimeout(() => {
 			try {
+				// 0 이 아닌 입력된 값들만 필터링
+				let filteredNcAA = Object.fromEntries(
+					Object.entries(ncAA).filter(([key, value]) => value !== 0)
+				);
+
 				// 기초 아미노산들 + 사용자 지정 아미노산을 합쳐서 경우의수를 구함
-				const aminoMapMerged = { ...selectedAminos, ...ncAA };
+				const aminoMapMerged = { ...selectedAminos, ...filteredNcAA };
 
 				// 계산 결과
 				bestSolutions = MassFinderHelper.calcByIonType(
@@ -72,7 +76,7 @@
 			} finally {
 				loading.set(false);
 			}
-		}, 0);
+		}, 100);
 	}
 
 	function handleFormylationChange(newFormylation: FormyType): void {
