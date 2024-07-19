@@ -53,6 +53,8 @@
 	/// Calculate! 버튼 클릭시 호출되는 메서드
 	async function handleCalculate(): Promise<void> {
 		loading.set(true);
+		// 데이터 검증 실패하면 프로세스 끝냄
+		if (validata() === false) return loading.set(false);
 		// 비동기로 처리하여 UI 업데이트를 보장
 		setTimeout(() => {
 			try {
@@ -99,6 +101,42 @@
 				.map(([key]) => [key, aminoMap[key]])
 		);
 	}
+
+	/// 현재입력된 값에 문제가 없는지 체크
+	function validata(): boolean {
+		if (exactMass === null) {
+			alert('Please Input ExtraMass');
+			return false;
+		}
+
+		if (validateEssentialSequence() === false) {
+			alert('Please enter the correct Essential Sequence');
+			return false;
+		}
+
+		return true;
+	}
+
+	/// essentialSequence의 유효성을 검사하는 함수
+	function validateEssentialSequence(): boolean {
+		// 0 이 아닌 입력된 값들만 필터링
+		let filteredNcAA = Object.fromEntries(
+			Object.entries(ncAA).filter(([key, value]) => value !== 0)
+		);
+
+		for (let char of essentialSequence) {
+			if (!aminoMap[char] && !filteredNcAA[char]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/// essentialSequence 값을 항상 대문자로 변환
+	function handleEssentialSequenceInput(event: Event): void {
+		const input = event.target as HTMLInputElement;
+		essentialSequence = input.value.toUpperCase();
+	}
 </script>
 
 <div class="container">
@@ -107,7 +145,12 @@
 		<input type="number" bind:value={exactMass} placeholder="Exact Mass" />
 	</div>
 	<div class="form-group">
-		<input type="text" bind:value={essentialSequence} placeholder="Essential Sequence (Option)" />
+		<input
+			type="text"
+			bind:value={essentialSequence}
+			placeholder="Essential Sequence (Option)"
+			on:input={handleEssentialSequenceInput}
+		/>
 	</div>
 	<div class="form-group">
 		<FormylationSelector on:change={(e) => handleFormylationChange(e.detail)} />
