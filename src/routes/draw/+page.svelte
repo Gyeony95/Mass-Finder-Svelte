@@ -42,7 +42,7 @@
 	/// 계산된 데이터 로컬 스토리지에 저장
 	function saveData() {
 		// 계산된게 없으면 리턴 처리
-		if ($moleculeJson == '') return alert('Please Input Data');
+		if ($moleculeJson == '') return alert('Please Calulate Data');
 
 		/// 계산된 데이터를 하나의 맵으로 만들어 저장
 		const dataSet = {
@@ -55,6 +55,7 @@
 		storedData.push(dataSet);
 		localStorage.setItem('moleculeData', JSON.stringify(storedData));
 		loadSavedData();
+		alert('Data Saved!');
 	}
 
 	/// 저장된 데이터 불러오기
@@ -83,16 +84,22 @@
 <main>
 	<h1>Chemical Draw Canvas</h1>
 	<canvas id="sketcher" width="500" height="500" />
-	<button on:click={onTapButton}>Calculate Chem</button>
-	{#if $molecularFormula}
-		<p class="result">Molecular Formula: {$molecularFormula}</p>
+	<br />
+	<div class="buttons">
+		<button on:click={onTapButton}>Calculate Chem</button>
+		<button on:click={saveData}>Save Data</button>
+	</div>
+	{#if $molecularFormula || $monoisotopicWeight}
+		<div class="results">
+			{#if $molecularFormula}
+				<p>Molecular Formula: {$molecularFormula}</p>
+			{/if}
+			{#if $monoisotopicWeight}
+				<p>Monoisotopic Weight: {$monoisotopicWeight}</p>
+			{/if}
+		</div>
 	{/if}
-	{#if $monoisotopicWeight}
-		<p class="result">Monoisotopic Weight: {$monoisotopicWeight}</p>
-	{/if}
-	<button on:click={saveData}>Save Data</button>
-
-	<h2>Saved Molecule Data</h2>
+	<h2 class="results">Saved Molecule Data</h2>
 	<ul>
 		{#each $savedData as data, index}
 			<li>
@@ -115,7 +122,7 @@
 		background-color: #f5f5f5;
 		border-radius: 10px;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		max-width: 600px;
+		max-width: 800px;
 		margin: 40px auto;
 	}
 
@@ -124,16 +131,23 @@
 		font-family: 'Arial', sans-serif;
 		color: #333;
 		margin-bottom: 20px;
+		text-align: center;
 	}
 
 	canvas {
 		border: 2px solid #ccc;
 		border-radius: 10px;
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		margin-bottom: 20px;
+	}
+
+	.buttons {
+		display: flex;
+		gap: 20px;
+		margin-bottom: 20px;
 	}
 
 	button {
-		margin-top: 20px;
 		padding: 12px 24px;
 		background-color: #007bff;
 		color: white;
@@ -153,14 +167,20 @@
 		background-color: #004494;
 	}
 
-	p.result {
-		margin-top: 20px;
-		font-size: 18px;
-		color: #333;
-		background-color: #e9e9e9;
+	.results {
+		width: 100%;
+		text-align: left;
+		margin-bottom: 20px;
+	}
+
+	.results p {
+		margin: 0;
 		padding: 10px;
+		background-color: #e9e9e9;
 		border-radius: 8px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		font-size: 18px;
+		color: #333;
 	}
 
 	ul {
@@ -192,5 +212,18 @@
 	.data-item button {
 		width: 70px;
 		background-color: #ff4d4d;
+		color: white;
+		border: none;
+		border-radius: 8px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+	}
+
+	.data-item button:hover {
+		background-color: #ff3333;
+	}
+
+	.data-item button:active {
+		background-color: #cc0000;
 	}
 </style>
