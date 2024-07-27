@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { Molecule } from '$lib/model/atom';
+	import MolecularItem from '$lib/components/MolecularItem.svelte';
 
 	let sketcher: ChemDoodle.SketcherCanvas;
 	let molecularFormula = writable('');
@@ -103,11 +104,7 @@
 	<ul>
 		{#each $savedData as data, index}
 			<li>
-				<div class="data-item">
-					<p>Molecular Formula: {data.molecularFormula}</p>
-					<p>Monoisotopic Weight: {data.monoisotopicWeight}</p>
-					<button on:click={() => deleteData(index)}>X</button>
-				</div>
+				<MolecularItem {data} {index} {deleteData} />
 			</li>
 		{/each}
 	</ul>
@@ -190,40 +187,7 @@
 	}
 
 	li {
-		margin-top: 10px;
-		background-color: #fff;
-		padding: 15px;
-		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.data-item {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.data-item p {
-		margin: 0;
-	}
-
-	.data-item button {
-		width: 70px;
-		background-color: #ff4d4d;
-		color: white;
-		border: none;
-		border-radius: 8px;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-	}
-
-	.data-item button:hover {
-		background-color: #ff3333;
-	}
-
-	.data-item button:active {
-		background-color: #cc0000;
+		justify-content: left;
 	}
 </style>
