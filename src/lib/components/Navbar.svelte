@@ -3,6 +3,7 @@
 	import type { Menu, SubMenu } from '$lib/model/MenuModel';
 	import { browser } from '$app/environment';
 	import { menuStore } from '$lib/stores/menuStore';
+	import { goto } from '$app/navigation';
 
 	let menus: Menu[] = [];
 
@@ -14,8 +15,8 @@
 		}
 	});
 
-	function onTapMenu(route: string) {
-		console.log(`Navigating to: ${route}`);
+	function onTapDraw() {
+		window.location.href = '/draw';
 	}
 </script>
 
@@ -25,37 +26,14 @@
 			<div>
 				<a class="mx-5 font-extrabold text-xl" href="/">Mass Finder</a>
 			</div>
-			<!-- <div class="flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 xl:gap-16 m-auto">
-				{#each menus as menu}
-					<div class="menu">
-						<a
-							class="menu-item hover:underline underline-offset-4"
-							href={menu.link}
-							on:click={() => onTapMenu(menu.link)}>{menu.title}</a
-						>
-						{#if menu.submenus}
-							<div class="dropdown-content">
-								{#each menu.submenus as submenu}
-									<div class="submenu">
-										<a href={submenu.link} on:click={() => onTapMenu(submenu.link)}
-											>{submenu.title}</a
-										>
-										{#if submenu.submenus}
-											<div class="sub-dropdown-content">
-												{#each submenu.submenus as thirdmenu}
-													<a href={thirdmenu.link} on:click={() => onTapMenu(thirdmenu.link)}
-														>{thirdmenu.title}</a
-													>
-												{/each}
-											</div>
-										{/if}
-									</div>
-								{/each}
-							</div>
-						{/if}
-					</div>
-				{/each}
-			</div> -->
+			<div>
+				<button
+					on:click={onTapDraw}
+					class="mx-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+				>
+					Draw
+				</button>
+			</div>
 		</div>
 	</div>
 </nav>
