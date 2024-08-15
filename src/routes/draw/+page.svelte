@@ -7,7 +7,7 @@
 	let sketcher: ChemDoodle.SketcherCanvas;
 	let molecularFormula = writable('');
 	let monoisotopicWeight = writable('');
-	let moleculeJson = writable('');
+	let moleculeJson = writable({});
 	let savedData = writable([]);
 
 	onMount(() => {
@@ -15,7 +15,7 @@
 		ChemDoodle.ELEMENT['H'].jmolColor = 'black';
 		ChemDoodle.ELEMENT['S'].jmolColor = '#B9A130';
 		sketcher = new ChemDoodle.SketcherCanvas('sketcher', 500, 300, {
-			useServices: true,
+			useServices: false, // 허용안된 기능인거같아서 막음
 			oneMolecule: true // 분자구조 한개만 그리게 처리
 		});
 		sketcher.styles.atoms_displayTerminalCarbonLabels_2D = true;
@@ -30,10 +30,10 @@
 
 	function onTapButton() {
 		let mol = sketcher.getMolecule();
-		let dummy = new ChemDoodle.io.JSONInterpreter().molTo(mol);
-		let obj = new ChemDoodle.io.JSONInterpreter().molFrom(dummy);
+		let molJson = new ChemDoodle.io.JSONInterpreter().molTo(mol);
+		let obj = new ChemDoodle.io.JSONInterpreter().molFrom(molJson);
 		let asString = JSON.stringify(obj);
-		moleculeJson.set(asString);
+		moleculeJson.set(molJson);
 		const molecule = Molecule.fromJson(asString);
 
 		molecularFormula.set(molecule.getMolecularFormula());

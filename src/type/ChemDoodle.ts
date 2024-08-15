@@ -19,4 +19,11 @@ declare namespace ChemDoodle {
     namespace lib {
         let jQuery: any;
     }
+
+    class ViewerCanvas {
+        constructor(id: string, width: number, height: number);
+        loadMolecule(data : any): any;
+        repaint(): void;
+        styles: any;
+    }
 }
