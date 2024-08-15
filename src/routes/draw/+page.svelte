@@ -43,7 +43,9 @@
 	/// 계산된 데이터 로컬 스토리지에 저장
 	function saveData() {
 		// 계산된게 없으면 리턴 처리
-		if ($moleculeJson == '') return alert('Please Calulate Data');
+		if (Object.keys($moleculeJson).length === 0 && $moleculeJson.constructor === Object) {
+			return alert('Please Calculate Data');
+		}
 
 		/// 계산된 데이터를 하나의 맵으로 만들어 저장
 		const dataSet = {

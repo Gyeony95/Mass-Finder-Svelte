@@ -67,6 +67,7 @@
 		border-radius: 8px;
 		cursor: pointer;
 		transition: background-color 0.3s ease;
+		margin-left: 20px; /* <canvas>와의 간격을 위해 왼쪽 마진 추가 */
 	}
 
 	button:hover {
