@@ -8,7 +8,7 @@
 	const dispatch = createEventDispatcher();
 
 	let savedData = writable([]);
-	let selectedData = writable({
+	let selectedData = writable<Record<string, any>>({
 		B: null,
 		J: null,
 		O: null,
@@ -67,9 +67,8 @@
 				<label>{key} :</label>
 				<button on:click={() => openModal(key)}>
 					{#if $selectedData[key]}
-						<a>{$selectedData[key].molecularFormula}</a>
-						<br />
-						<a>{$selectedData[key].monoisotopicWeight}</a>
+						<div>{$selectedData[key].molecularFormula}</div>
+						<div>{$selectedData[key].monoisotopicWeight}</div>
 					{:else}
 						Select <!-- null인 경우 표시 -->
 					{/if}

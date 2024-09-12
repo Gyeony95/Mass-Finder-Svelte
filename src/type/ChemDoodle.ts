@@ -26,4 +26,12 @@ declare namespace ChemDoodle {
         repaint(): void;
         styles: any;
     }
+
+    // 추가된 io 네임스페이스
+    namespace io {
+        class JSONInterpreter {
+            molTo(molecule: any): string; 
+            molFrom(json: string): any;
+        }
+    }
 }
