@@ -68,7 +68,7 @@
 	}
 
 	/// 리스트에서 아이템 삭제
-	function deleteData(index) {
+	function deleteData(index: number) {
 		let storedData = JSON.parse(localStorage.getItem('moleculeData') || '[]');
 		storedData.splice(index, 1);
 		localStorage.setItem('moleculeData', JSON.stringify(storedData));

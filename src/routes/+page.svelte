@@ -2,14 +2,14 @@
 	import IonSelector from '$lib/components/IonSelector.svelte';
 	import FormylationSelector from '$lib/components/FormylationSelector.svelte';
 	import AminoMapSelector from '$lib/components/AminoMapSelector.svelte';
-	import NcAAInputArea from '$lib/components/NcAAInputArea.svelte';
+	import NcAASelector from '$lib/components/NcAASelector.svelte';
 	import ResultTable from '$lib/components/ResultTable.svelte';
 	import { MassFinderHelper } from '$lib/helper/mass_finder_helper';
 	import type { FormyType, IonType } from '../type/Types';
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 
-	/// 기초 아미노산들의 리스트
+	// 기초 아미노산 리스트
 	const aminoMap: { [key: string]: number } = {
 		G: 75.03,
 		A: 89.05,
@@ -33,7 +33,7 @@
 		R: 174.11
 	};
 
-	/// 내가 입력한 mass 값
+	// 상태 관리 변수들
 	let exactMass: number | null = null;
 	/// 필수로 들어가야 하는 아미노산이 있다면 여기다 기입(선택값)
 	let essentialSequence: string = '';
@@ -45,9 +45,7 @@
 	let selectedAminos: { [key: string]: number } = { ...aminoMap };
 	/// 사용자 지정 아미노산
 	let ncAA: { [key: string]: number } = { B: 0.0, J: 0.0, O: 0.0, U: 0.0, X: 0.0, Z: 0.0 };
-
 	const loading = getContext<Writable<boolean>>('loading');
-
 	let bestSolutions: any[] = [];
 
 	/// Calculate! 버튼 클릭시 호출되는 메서드
@@ -89,8 +87,12 @@
 		adduct = newAdduct;
 	}
 
-	function handleNcAAChange(newNcAA: { [key: string]: number }): void {
-		ncAA = newNcAA;
+	function handleNcAAChange(e: CustomEvent<{ [key: string]: any }>): void {
+		let _data = Object.entries(e.detail).reduce((acc, [key, value]) => {
+			acc[key] = Number(value?.monoisotopicWeight ?? 0.0);
+			return acc;
+		}, {} as { [key: string]: number });
+		ncAA = _data;
 	}
 
 	/// Amino Selector 에서 값이 바뀌면 string : bool 형태로 내려오는데 이걸 string : number 형태로 바꿔서 저장
@@ -139,6 +141,14 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Mass Finder</title>
+	<link rel="stylesheet" href="chem_doodle/install/ChemDoodleWeb.css" type="text/css" />
+	<script type="text/javascript" src="chem_doodle/install/ChemDoodleWeb.js"></script>
+	<link rel="stylesheet" href="chem_doodle/install/uis/jquery-ui-1.11.4.css" type="text/css" />
+	<script type="text/javascript" src="chem_doodle/install/uis/ChemDoodleWeb-uis.js"></script>
+</svelte:head>
+
 <div class="container">
 	<div class="title">Mass finder</div>
 	<div class="form-group">
@@ -162,7 +172,7 @@
 		<AminoMapSelector on:changeAminos={(e) => handleAminoMapChange(e.detail)} />
 	</div>
 	<div class="form-group">
-		<NcAAInputArea bind:initNcAA={ncAA} on:changeNcAA={(e) => handleNcAAChange(e.detail)} />
+		<NcAASelector on:changeNcAA={handleNcAAChange} />
 	</div>
 	<button type="button" class="calculate" on:click={handleCalculate}>Calculate!</button>
 	{#if exactMass !== null && bestSolutions.length > 0}
