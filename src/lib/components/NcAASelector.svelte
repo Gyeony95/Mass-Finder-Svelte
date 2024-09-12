@@ -31,6 +31,7 @@
 
 	// openModal 함수에서 key를 타입 캐스팅해서 전달
 	function openModal(key: keyof typeof $selectedData) {
+		if ($savedData.length == 0) return alert('There is no ncAA created.');
 		selectedKey = key;
 		showModal.set(true);
 	}
