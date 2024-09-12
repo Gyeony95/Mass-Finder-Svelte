@@ -1,0 +1,12 @@
+
+
+run:
+	@echo "Make RUN"
+	@npm run dev
+
+
+build:
+	@echo "Make RUN"
+	@npm build run
+
+
